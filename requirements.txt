@@ -5,3 +5,7 @@ snowflake-connector-python[pandas]==3.7.0
 pydantic==2.6.3
 python-dotenv==1.0.1
 pyspark==3.5.1
+scikit-learn>=1.4.0
+numpy>=1.26.0
+pytest>=8.0.0
+pytest-cov>=4.1.0
