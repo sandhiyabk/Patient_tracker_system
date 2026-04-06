@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: RAW
+    database: ONCOLOGY_DB
+    schema: RAW
+    tables:
+      - name: RAW_PATIENT_DATA
+        description: "Raw patient data ingested via PySpark from patient_journeys.json"

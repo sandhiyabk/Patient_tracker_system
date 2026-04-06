@@ -1,0 +1,26 @@
+name: 'oncology_dbt'
+version: '1.0.0'
+
+config-version: 2
+
+vars:
+  snowflake:
+    database: 'ONCOLOGY_DB'
+    schema: 'RAW'
+
+models:
+  oncology_dbt:
+    +database: ONCOLOGY_DB
+    +schema: GOLD
+    +materialized: table
+    
+    models:
+      +tags: ["gold", "risk"]
+
+sources:
+  - name: RAW
+    database: ONCOLOGY_DB
+    schema: RAW
+    tables:
+      - name: RAW_PATIENT_DATA
+        description: Raw patient data ingested from PySpark

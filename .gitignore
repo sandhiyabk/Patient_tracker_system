@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.env
+nul
+oncology-dashboard/node_modules/
+oncology-dashboard/dist/
+.DS_Store

@@ -1,0 +1,58 @@
+version: 2
+
+models:
+  - name: gold_patient_risk
+    description: |
+      Gold layer table calculating risk scores for oncology patients.
+      Uses the formula: (0.3 * Age_norm) + (0.3 * Tumor_norm) + (0.2 * Cycle_norm) + (0.2 * WBC_slope)
+    columns:
+      - name: PATIENT_ID
+        description: Unique patient identifier
+        tests:
+          - unique
+          - not_null
+      
+      - name: AGE
+        description: Patient age in years
+      
+      - name: GENDER
+        description: Patient gender
+      
+      - name: CANCER_TYPE
+        description: Type of cancer diagnosis
+      
+      - name: WBC_AVG
+        description: Average white blood cell count across all lab results
+      
+      - name: WBC_SLOPE_TOTAL
+        description: Cumulative rate of change of WBC across treatment period
+      
+      - name: TUMOR_MARKERS_AVG
+        description: Average tumor marker level
+      
+      - name: CHEMO_CYCLE_COUNT
+        description: Number of chemotherapy cycles completed
+      
+      - name: AGE_NORM
+        description: Normalized age (Age / 100)
+      
+      - name: TUMOR_NORM
+        description: Normalized tumor markers (Tumor_Avg / 100)
+      
+      - name: CYCLE_NORM
+        description: Normalized chemo cycles (Cycle_Count / 10)
+      
+      - name: WBC_SLOPE_NORM
+        description: Normalized WBC slope severity
+      
+      - name: PRE_SCORE
+        description: Calculated risk score before threshold
+      
+      - name: RISK_LEVEL
+        description: HIGH_RISK if PRE_SCORE > 0.4, else STANDARD
+      
+      - name: HIGH_RISK_FLAG
+        description: Ground truth high risk flag from original data
+      
+      - name: RISK_FACTORS
+        description: Comma-separated list of identified risk factors

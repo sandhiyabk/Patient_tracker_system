@@ -1,0 +1,29 @@
+{
+  "baseline": {
+    "Precision": 0.4124124124124124,
+    "Recall": 1.0,
+    "Total_Patients": 1000,
+    "Total_High_Risk": 412,
+    "Total_Approved": 999,
+    "High_Risk_Approved": 412,
+    "Safety_Miss_Rate": 1.0,
+    "True_Positives": 412,
+    "False_Positives": 587,
+    "True_Negatives": 1,
+    "False_Negatives": 0
+  },
+  "agentic": {
+    "Precision": 0.2682119205298013,
+    "Recall": 0.1966019417475728,
+    "Total_Patients": 1000,
+    "Total_High_Risk": 412,
+    "Total_Approved": 302,
+    "High_Risk_Approved": 81,
+    "Safety_Miss_Rate": 0.1966019417475728,
+    "True_Positives": 81,
+    "False_Positives": 221,
+    "True_Negatives": 367,
+    "False_Negatives": 331
+  },
+  "reduction_percentage": 80.33980582524272
+}
