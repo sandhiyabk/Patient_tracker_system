@@ -1,14 +1,5 @@
-fastapi==0.110.0
-uvicorn==0.27.1
-langgraph==0.0.26
-snowflake-connector-python[pandas]==3.7.0
-pydantic==2.6.3
-python-dotenv==1.0.1
-pyspark==3.5.1
-scikit-learn>=1.4.0
-numpy>=1.26.0
-pytest>=8.0.0
-pytest-cov>=4.1.0
 streamlit>=1.32.0
-pandas>=1.0.0,<2.2.0
+pandas>=2.0.0
 plotly>=5.19.0
+numpy>=1.26.0
+scikit-learn>=1.4.0

@@ -1,6 +1,35 @@
 # Oncology Patient Journey AI System
 
-A production-grade, multi-agent AI system for oncology clinical decision support that leverages PySpark, Snowflake, dbt, FastAPI, and LangGraph.
+A production-grade, multi-agent AI system for oncology clinical decision support that leverages PySpark, Snowflake, dbt, FastAPI, LangGraph, and Streamlit.
+
+## Deployment
+
+### Streamlit Cloud (Recommended)
+
+1. **Fork this repository** on GitHub
+2. Go to [share.streamlit.io](https://share.streamlit.io)
+3. Connect your GitHub account
+4. Select this repository and branch
+5. Deploy!
+
+**App URL:** `https://share.streamlit.io/your-username/patient_tracker_system`
+
+### Local Deployment
+
+```bash
+# Clone repository
+git clone https://github.com/sandhiyabk/Patient_tracker_system.git
+cd Patient_tracker_system
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run Streamlit app
+streamlit run streamlit_app.py
+
+# Or run FastAPI backend
+uvicorn main:app --reload
+```
 
 ## Architecture
 
@@ -8,28 +37,18 @@ A production-grade, multi-agent AI system for oncology clinical decision support
 ┌─────────────────────────────────────────────────────────────────┐
 │                    ONCOLOGY AI SYSTEM                           │
 ├─────────────────────────────────────────────────────────────────┤
-│                                                                 │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐           │
-│  │ Risk Agent  │  │Treatment Agent│  │ Alert Agent │           │
-│  │             │  │              │  │             │           │
-│  │ • Age Risk  │  │ • NCCN Guide │  │ • Lab Alerts│           │
-│  │ • Lab Flags │  │ • Dosing     │  │ • Drug Intx │           │
-│  │ • Scoring   │  │ • Supportive │  │ • Escalate  │           │
-│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘           │
-│         │                  │                  │                  │
-│         └──────────────────┼──────────────────┘                  │
-│                            ▼                                     │
-│                  ┌──────────────────┐                            │
-│                  │ Safety Guardrails│                            │
-│                  │ • Drug Intx DB  │                            │
-│                  │ • Contraindics  │                            │
-│                  │ • Black Box Warn │                            │
-│                  └────────┬─────────┘                            │
-│                           ▼                                      │
-│                  ┌──────────────────┐                            │
-│                  │  Orchestrator    │                            │
-│                  │  + Evaluation    │                            │
-│                  └──────────────────┘                            │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐         │
+│  │ Risk Agent  │  │Treatment Agent│  │ Alert Agent │         │
+│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘         │
+│         └──────────────────┼──────────────────┘                 │
+│                            ▼                                    │
+│                  ┌──────────────────┐                           │
+│                  │ Safety Guardrails│                           │
+│                  └────────┬─────────┘                           │
+│                           ▼                                     │
+│                  ┌──────────────────┐                           │
+│                  │  Orchestrator    │                           │
+│                  └──────────────────┘                           │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -68,43 +87,12 @@ A production-grade, multi-agent AI system for oncology clinical decision support
 
 | Metric | Target | Baseline | Agentic | Improvement |
 |--------|--------|----------|---------|-------------|
-| **Risk AUC** | ≥ 0.83 | 0.68 | 0.85 | **+25%** |
-| **Treatment Concordance** | ≥ 76% | 62% | 78% | **+26%** |
-| **Early Detection Rate** | ≥ 58% | 45% | 62% | **+38%** |
+| **Risk AUC** | >= 0.83 | 0.68 | 0.85 | **+25%** |
+| **Treatment Concordance** | >= 76% | 62% | 78% | **+26%** |
+| **Early Detection Rate** | >= 58% | 45% | 62% | **+38%** |
 | **Safety Block Rate** | 100% | ~70% | 100% | **+43%** |
 
-### Clinical Impact
-
-- **High-Risk Patient Identification**: 22% improvement in detecting at-risk patients
-- **Treatment Safety**: 100% of contraindicated treatments blocked
-- **Alert Response Time**: Immediate escalation for critical cases
-- **Physician Time Savings**: Automated triage reduces manual review by ~60%
-
-## Setup
-
-```bash
-# Clone repository
-git clone https://github.com/sandhiyabk/Patient_tracker_system.git
-cd Patient_tracker_system
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Environment setup
-cp .env.example .env
-# Edit .env with your Snowflake credentials
-
-# Run tests
-pytest tests/ -v
-
-# Run demo
-python orchestrator.py
-
-# Start API
-uvicorn main:app --reload
-```
-
-## Quick Start
+## Quick Start (Python API)
 
 ```python
 from orchestrator import OncologyOrchestrator
@@ -122,7 +110,7 @@ result = orchestrator.analyze_patient(patient)
 print(result.overall_status)  # "HOLD - Safety Review Required"
 ```
 
-## API Endpoints
+## API Endpoints (FastAPI)
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
@@ -140,48 +128,69 @@ pytest tests/ -v
 
 # Run with coverage
 pytest tests/ --cov=. --cov-report=html
-
-# Run specific test
-pytest tests/test_oncology_ai.py::TestRiskAgent -v
 ```
 
 ## Project Structure
 
 ```
 patient_journey_system/
+├── .streamlit/
+│   └── config.toml          # Streamlit configuration
 ├── agents/
 │   ├── __init__.py
-│   ├── risk_agent.py       # Risk stratification
-│   ├── treatment_agent.py  # Treatment recommendations
-│   └── alert_agent.py      # Clinical alerts
+│   ├── risk_agent.py        # Risk stratification
+│   ├── treatment_agent.py    # Treatment recommendations
+│   └── alert_agent.py       # Clinical alerts
 ├── safety/
 │   ├── __init__.py
-│   └── safety_guardrails.py # Drug/lab safety checks
+│   └── safety_guardrails.py  # Drug/lab safety checks
 ├── data/
 │   ├── __init__.py
-│   └── mimic_data_generator.py # MIMIC-IV synthetic data
+│   └── mimic_data_generator.py
 ├── evaluation/
 │   ├── __init__.py
-│   └── evaluation_framework.py # AUC/ROC metrics
+│   └── evaluation_framework.py
 ├── tests/
-│   └── test_oncology_ai.py # 18 passing tests
-├── orchestrator.py          # Agent coordination
-├── main.py                  # FastAPI app
-├── langgraph_oncology.py   # LangGraph workflow
-├── snowflake_client.py      # Snowflake connection
-└── benchmark.py             # Performance benchmarking
+│   └── test_oncology_ai.py  # 18 passing tests
+├── orchestrator.py           # Agent coordination
+├── streamlit_app.py          # Streamlit dashboard
+├── main.py                  # FastAPI backend
+├── langgraph_oncology.py    # LangGraph workflow
+├── snowflake_client.py       # Snowflake connection
+├── requirements.txt         # Dependencies
+└── README.md
 ```
 
 ## Technology Stack
 
 - **Python 3.11+**
+- **Streamlit** - Interactive dashboard (Cloud-ready)
 - **FastAPI** - REST API framework
 - **LangGraph** - Multi-agent orchestration
 - **Snowflake** - Data warehouse
 - **PySpark** - Data ingestion
 - **dbt** - Data transformation
-- **React** - Dashboard UI
 - **scikit-learn** - ML metrics
+- **Plotly** - Data visualization
+
+## Streamlit Cloud Deployment
+
+The `streamlit_app.py` is configured for Streamlit Cloud deployment:
+
+1. App runs with mock/demo data by default
+2. Snowflake connection optional (add secrets in Streamlit Cloud)
+3. Responsive dark theme UI
+4. All 4 tabs functional without external dependencies
+
+### Optional Snowflake Secrets (for production)
+
+Add in Streamlit Cloud > App > Settings > Secrets:
+
+```toml
+SNOWFLAKE_ACCOUNT = "your_account"
+SNOWFLAKE_USER = "your_user"
+SNOWFLAKE_PASSWORD = "your_password"
+```
 
 ## Compliance & Safety
 
